@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Organization\Position;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
@@ -47,5 +48,10 @@ class Employee extends Model
     public function termination()
     {
         return $this->hasOne(EmployeeTermination::class);
+    }
+
+    public function position()
+    {
+        return $this->hasOne(Position::class);
     }
 }
