@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Organization\Policy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,7 +53,11 @@ class User extends Authenticatable
         return $this->hasOne(Employee::class);
     }
 
-    // Di dalam model User.php
+    public function policies() 
+    {
+        return $this->hasMany(Policy::class);
+    }
+
     public function syncRolesFromPosition()
     {
         // 1. Cari jabatan user ini lewat relasi employee

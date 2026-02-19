@@ -104,6 +104,7 @@ return [
         'separator' => ':',
         'case' => 'pascal',
         'generate' => true,
+        // 'dashboard' => true
     ],
 
     /*

@@ -2,56 +2,130 @@
 
 namespace App\Models;
 
+use App\Models\Organization\Company;
+use App\Models\Organization\Division;
+use App\Models\Organization\Echelon;
+use App\Models\Organization\Grade;
 use App\Models\Organization\Position;
+use App\Models\Organization\Region;
+use App\Models\Organization\Unit;
+use App\Models\Recruitment\FpsRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
+    use SoftDeletes;
     protected $guarded = ['id'];
 
-    // Relasi ke Akun Login
-    public function user()
+    protected $casts = [
+        'join_date' => 'date',
+        'is_active' => 'boolean',
+    ];
+
+    /**
+     * Relasi ke Akun Login (User)
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // 2a. Relasi ke Data Detail (Pribadi/KTP/Alamat) - One to One
-    public function detail()
+    /**
+     * Relasi ke Company
+     */
+    public function company(): BelongsTo
     {
-        return $this->hasOne(EmployeeDetail::class);
+        return $this->belongsTo(Company::class);
     }
 
-    // 2e. Relasi ke Riwayat Penugasan (Promosi/Mutasi) - One to Many
-    public function assignments()
+    /**
+     * Relasi ke Region (Wilayah)
+     */
+    public function region(): BelongsTo
     {
-        return $this->hasMany(EmployeeAssignment::class);
+        return $this->belongsTo(Region::class);
     }
 
-    // Mendapatkan Jabatan Aktif Saat Ini
-    public function currentAssignment()
+    /**
+     * Relasi ke Division (Divisi)
+     */
+    public function division(): BelongsTo
     {
-        return $this->hasOne(EmployeeAssignment::class)->where('is_current', true);
+        return $this->belongsTo(Division::class);
     }
 
-    public function getRegionNameAttribute()
-{
-    return $this->currentAssignment?->region?->name ?? 'N/A';
-}
-
-    // 2g. Relasi ke Riwayat Pelanggaran (ST/SP) - One to Many
-    public function disciplinaryActions()
+    /**
+     * Relasi ke Unit (Unit Kerja)
+     */
+    public function unit(): BelongsTo
     {
-        return $this->hasMany(DisciplinaryAction::class);
+        return $this->belongsTo(Unit::class);
     }
 
-    // 2b. Relasi ke Data Resign/PHK - One to One
-    public function termination()
+    /**
+     * Relasi ke Position (Jabatan)
+     */
+    public function position(): BelongsTo
     {
-        return $this->hasOne(EmployeeTermination::class);
+        return $this->belongsTo(Position::class);
     }
 
-    public function position()
+    /**
+     * Relasi ke Echelon (Eselon)
+     */
+    public function echelon(): BelongsTo
     {
-        return $this->hasOne(Position::class);
+        return $this->belongsTo(Echelon::class);
+    }
+
+    /**
+     * Relasi ke Grade (Pangkat/Golongan)
+     */
+    public function grade(): BelongsTo
+    {
+        return $this->belongsTo(Grade::class);
+    }
+
+    /**
+     * Relasi ke FPS Request (jika direkrut melalui FPS)
+     */
+    public function fpsRequest(): BelongsTo
+    {
+        return $this->belongsTo(FpsRequest::class);
+    }
+
+    /**
+     * Nama Wilayah (accessor)
+     */
+    public function getRegionNameAttribute(): string
+    {
+        return $this->region?->name ?? 'N/A';
+    }
+
+    /**
+     * Nama Divisi (accessor)
+     */
+    public function getDivisionNameAttribute(): string
+    {
+        return $this->division?->name ?? 'N/A';
+    }
+
+    /**
+     * Nama Unit (accessor)
+     */
+    public function getUnitNameAttribute(): string
+    {
+        return $this->unit?->name ?? 'N/A';
+    }
+
+    /**
+     * Nama Jabatan (accessor)
+     */ 
+    public function getPositionNameAttribute(): string
+    {
+        return $this->position?->name ?? 'N/A';
     }
 }

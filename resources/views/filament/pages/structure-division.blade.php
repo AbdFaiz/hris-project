@@ -21,7 +21,7 @@
                         <div class="text-xs text-gray-500">{{ $pos->unit?->name }}</div>
                         <hr class="my-2">
                         @foreach($pos->employees as $emp)
-    <div class="text-sm font-medium">{{ $emp->full_name }}</div> {{-- Ganti ke full_name --}}
+    <div class="text-sm font-medium">{{ $emp->name }}</div> {{-- Ganti ke full_name --}}
 @endforeach
                     </div>
                     @if(!$loop->last)

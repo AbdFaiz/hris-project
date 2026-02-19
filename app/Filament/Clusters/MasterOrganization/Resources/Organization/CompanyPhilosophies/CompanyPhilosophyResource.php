@@ -25,6 +25,21 @@ class CompanyPhilosophyResource extends Resource
 
     protected static ?string $cluster = MasterOrganizationCluster::class;
 
+    public static function getNavigationLabel(): string
+{
+    return __('Company Philosophy');
+}
+
+public static function getModelLabel(): string
+{
+    return __('Company Philosophy');
+}
+
+public static function getPluralModelLabel(): string
+{
+    return __('Company Philosopies');
+}
+
     public static function form(Schema $schema): Schema
     {
         return CompanyPhilosophyForm::configure($schema);

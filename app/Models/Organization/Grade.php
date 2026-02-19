@@ -2,17 +2,26 @@
 
 namespace App\Models\Organization;
 
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Grade extends Model
 {
     protected $guarded = ['id'];
 
     /**
-     * Relasi ke User yang mengupdate (Admin Test)
+     * Relasi ke Employees (Karyawan dengan grade ini)
+     */
+    public function employees(): HasMany
+    {
+        return $this->hasMany(Employee::class);
+    }
+
+    /**
+     * Relasi ke User pemutakhir data
      */
     public function updater(): BelongsTo
     {

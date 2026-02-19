@@ -19,10 +19,6 @@ return new class extends Migration
             $table->string('region_id')->unique(); // Contoh: REG01
             $table->string('name'); // Contoh: Wilayah Jawa Barat
             
-
-            // Relasi ke Employee untuk Kepala Wilayah
-            $table->foreignId('head_id')->nullable()->constrained('employees')->onDelete('set null');
-
             $table->boolean('is_active')->default(true); // Status Active/Inactive
 
             // Region Information

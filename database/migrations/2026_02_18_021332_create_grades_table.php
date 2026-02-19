@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('grade_id')->unique(); // ID Pangkat (Angka/Huruf)
             $table->string('name'); // Contoh: Grade 1, Grade 2, atau Staff, Manager
             
-
             $table->longText('profile')->nullable(); // Deskripsi kualifikasi grade
             $table->boolean('is_active')->default(true);
 

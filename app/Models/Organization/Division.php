@@ -2,18 +2,18 @@
 
 namespace App\Models\Organization;
 
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Division extends Model
 {
     protected $guarded = ['id'];
 
     /**
-     * Relasi ke Perusahaan (Parent)
+     * Relasi ke Company
      */
     public function company(): BelongsTo
     {
@@ -21,11 +21,19 @@ class Division extends Model
     }
 
     /**
-     * Relasi ke Unit Kerja (Child)
+     * Relasi ke Units (Unit Kerja)
      */
     public function units(): HasMany
     {
         return $this->hasMany(Unit::class);
+    }
+
+    /**
+     * Relasi ke Employees (Karyawan di divisi ini)
+     */
+    public function employees(): HasMany
+    {
+        return $this->hasMany(Employee::class);
     }
 
     /**

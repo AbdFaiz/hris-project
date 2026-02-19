@@ -19,7 +19,20 @@ class StructureDivision extends Page implements HasForms
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
     protected string $view = 'filament.pages.structure-division';
-    protected static ?string $navigationLabel = 'Structure Company';
+    public static function getNavigationLabel(): string
+{
+    return __('Structure Company');
+}
+
+public static function getModelLabel(): string
+{
+    return __('Structure Company');
+}
+
+public static function getPluralModelLabel(): string
+{
+    return __('Structure Companies');
+}
     protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     public ?array $data = [];

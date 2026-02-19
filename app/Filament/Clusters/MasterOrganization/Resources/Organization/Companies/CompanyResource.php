@@ -12,12 +12,14 @@ use App\Filament\Clusters\MasterOrganization\Resources\Organization\Companies\Sc
 use App\Filament\Clusters\MasterOrganization\Resources\Organization\Companies\Tables\CompaniesTable;
 use App\Models\Organization\Company;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class CompanyResource extends Resource
+// implements HasShieldPermissions
 {
     protected static ?string $model = Company::class;
 
@@ -26,6 +28,33 @@ class CompanyResource extends Resource
     protected static ?string $cluster = MasterOrganizationCluster::class;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+{
+    return __('Company'); // Dia bakal nyari kunci "Company" di id.json
+}
+
+public static function getModelLabel(): string
+{
+    return __('Company');
+}
+
+public static function getPluralModelLabel(): string
+{
+    return __('Companies');
+}
+
+    // public static function getPermissionPrefixes(): array
+    // {
+    //     return [
+    //         'view',
+    //         'view_any',
+    //         'create',
+    //         'update',
+    //         'delete',
+    //         'delete_any',
+    //     ];
+    // }
 
     public static function form(Schema $schema): Schema
     {

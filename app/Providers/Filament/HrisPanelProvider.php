@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\SingleSessionLogin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -28,7 +29,10 @@ class HrisPanelProvider extends PanelProvider
             ->default()
             ->id('hris')
             ->path('hris')
-            ->login()
+            ->login(
+            )
+            ->profile()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -52,6 +56,7 @@ class HrisPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                // SingleSessionLogin::class,
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
