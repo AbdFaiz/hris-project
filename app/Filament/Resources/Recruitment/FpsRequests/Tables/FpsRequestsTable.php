@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\Recruitment\FpsRequests\Tables;
 
+use App\Models\Recruitment\FpsRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -11,6 +14,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class FpsRequestsTable
 {
@@ -20,13 +24,7 @@ class FpsRequestsTable
             ->columns([
                 TextColumn::make('fps_number')
                     ->searchable(),
-                TextColumn::make('applicant.name')
-                    ->searchable(),
                 TextColumn::make('applicant_name')
-                    ->searchable(),
-                TextColumn::make('applicant_position')
-                    ->searchable(),
-                TextColumn::make('applicant_region')
                     ->searchable(),
                 TextColumn::make('request_date')
                     ->date()
@@ -40,15 +38,6 @@ class FpsRequestsTable
                     ->badge(),
                 TextColumn::make('final_status')
                     ->badge(),
-                TextColumn::make('closed_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -68,6 +57,20 @@ class FpsRequestsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('exportPdf')
+                    ->label('Export PDF (FPS)')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('danger')
+                    ->action(function (FpsRequest $record) {
+                        $pdf = Pdf::loadView('pdf.fps-request', ['record' => $record])
+                            ->setPaper('a4', 'portrait');
+
+                        $filename = 'FPS-' . Str::slug($record->fps_number, '-') . '.pdf';
+
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, $filename);
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
