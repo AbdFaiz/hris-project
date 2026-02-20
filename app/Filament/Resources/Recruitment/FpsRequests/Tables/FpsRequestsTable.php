@@ -58,14 +58,22 @@ class FpsRequestsTable
                 ViewAction::make(),
                 EditAction::make(),
                 Action::make('exportPdf')
-                    ->label('Export PDF (FPS)')
+                    ->label('Export PDF')
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('danger')
                     ->action(function (FpsRequest $record) {
                         $pdf = Pdf::loadView('pdf.fps-request', ['record' => $record])
-                            ->setPaper('a4', 'portrait');
+                            ->setPaper('a4', 'portrait')
+                            ->setOptions([
+                                'isHtml5ParserEnabled' => true,
+                                'defaultFont' => 'Arial',
+                                'margin_top' => 8,
+                                'margin_bottom' => 8,
+                                'margin_left' => 8,
+                                'margin_right' => 8,
+                            ]);
 
-                        $filename = 'FPS-' . Str::slug($record->fps_number, '-') . '.pdf';
+                        $filename = 'FPS-'.Str::slug($record->fps_number, '-').'.pdf';
 
                         return response()->streamDownload(function () use ($pdf) {
                             echo $pdf->output();
